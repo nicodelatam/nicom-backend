@@ -1168,6 +1168,7 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     phone: Attribute.String;
     email: Attribute.String;
     logo: Attribute.Media<'images'>;
+    short_name: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
