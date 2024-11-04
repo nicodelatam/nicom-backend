@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "monthlybills",
+  "info": {
+    "singularName": "monthlybill",
+    "pluralName": "monthlybills",
+    "displayName": "monthlybill",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "month": {
+      "type": "integer"
+    },
+    "year": {
+      "type": "integer"
+    },
+    "path": {
+      "type": "string"
+    },
+    "success": {
+      "type": "boolean"
+    },
+    "type": {
+      "type": "string"
+    },
+    "resend": {
+      "type": "integer"
+    },
+    "resend_at": {
+      "type": "string"
+    },
+    "service": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::service.service",
+      "inversedBy": "monthlybills"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "monthlybills"
+    }
+  }
+}

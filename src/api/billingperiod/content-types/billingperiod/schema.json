@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "billingperiods",
+  "info": {
+    "singularName": "billingperiod",
+    "pluralName": "billingperiods",
+    "displayName": "billingperiod",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "city": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::city.city",
+      "inversedBy": "billingperiods"
+    },
+    "month": {
+      "type": "integer"
+    },
+    "year": {
+      "type": "integer"
+    },
+    "clienttype": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::clienttype.clienttype",
+      "inversedBy": "billingperiods"
+    },
+    "errors": {
+      "type": "integer"
+    },
+    "errorList": {
+      "type": "text"
+    },
+    "successes": {
+      "type": "integer"
+    },
+    "finished": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

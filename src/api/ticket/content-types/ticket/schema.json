@@ -1,0 +1,127 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tickets",
+  "info": {
+    "singularName": "ticket",
+    "pluralName": "tickets",
+    "displayName": "ticket",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "details": {
+      "type": "text"
+    },
+    "answered": {
+      "type": "boolean",
+      "default": false
+    },
+    "escalated": {
+      "type": "boolean"
+    },
+    "city": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::city.city",
+      "inversedBy": "tickets"
+    },
+    "tickettype": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tickettype.tickettype",
+      "inversedBy": "tickets"
+    },
+    "assignated": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "tickets"
+    },
+    "ticketdetails": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ticketdetail.ticketdetail",
+      "mappedBy": "ticket"
+    },
+    "clienttype": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::clienttype.clienttype",
+      "inversedBy": "tickets"
+    },
+    "escalatedoffice": {
+      "type": "boolean"
+    },
+    "channel": {
+      "type": "string"
+    },
+    "reboot": {
+      "type": "boolean"
+    },
+    "network": {
+      "type": "boolean"
+    },
+    "on": {
+      "type": "boolean"
+    },
+    "tvspec": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::tvspec.tvspec",
+      "mappedBy": "ticket"
+    },
+    "technician": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "ticketstechnician"
+    },
+    "opticalpower": {
+      "type": "integer"
+    },
+    "signed": {
+      "type": "boolean",
+      "default": false
+    },
+    "signature": {
+      "type": "string"
+    },
+    "media": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    },
+    "time": {
+      "type": "datetime"
+    },
+    "service": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::service.service",
+      "inversedBy": "tickets"
+    },
+    "events": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::event.event",
+      "mappedBy": "ticket"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "tickets"
+    }
+  }
+}

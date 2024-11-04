@@ -1,0 +1,187 @@
+{
+  "kind": "collectionType",
+  "collectionName": "services",
+  "info": {
+    "singularName": "service",
+    "pluralName": "services",
+    "displayName": "service",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string"
+    },
+    "clienttype": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::clienttype.clienttype",
+      "inversedBy": "services"
+    },
+    "offer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::offer.offer",
+      "inversedBy": "services"
+    },
+    "technology": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::technology.technology",
+      "inversedBy": "services"
+    },
+    "city": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::city.city",
+      "inversedBy": "services"
+    },
+    "service_addresses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::service-address.service-address",
+      "mappedBy": "service"
+    },
+    "mac_addresses": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::device.device",
+      "inversedBy": "services"
+    },
+    "naps": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::nap.nap",
+      "inversedBy": "services"
+    },
+    "plan": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::plan.plan",
+      "inversedBy": "services"
+    },
+    "tickets": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ticket.ticket",
+      "mappedBy": "service"
+    },
+    "debtmovements": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::debtmovement.debtmovement",
+      "mappedBy": "service"
+    },
+    "offermovements": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::offermovement.offermovement",
+      "mappedBy": "service"
+    },
+    "monthlybills": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::monthlybill.monthlybill",
+      "mappedBy": "service"
+    },
+    "tvspec": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::tvspec.tvspec",
+      "inversedBy": "service"
+    },
+    "stratum": {
+      "type": "integer"
+    },
+    "invoices": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::invoice.invoice",
+      "mappedBy": "service"
+    },
+    "opticalpower": {
+      "type": "integer"
+    },
+    "signed": {
+      "type": "boolean"
+    },
+    "signature": {
+      "type": "string"
+    },
+    "corporate": {
+      "type": "boolean"
+    },
+    "pppoe_events": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::pppoe-event.pppoe-event",
+      "mappedBy": "service"
+    },
+    "legal_notes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::legal-note.legal-note",
+      "mappedBy": "service"
+    },
+    "normalized_client": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::normalized-client.normalized-client",
+      "inversedBy": "services"
+    },
+    "wifi_ssid": {
+      "type": "string"
+    },
+    "wifi_password": {
+      "type": "string"
+    },
+    "newModel": {
+      "type": "integer"
+    },
+    "ipmodel": {
+      "type": "integer"
+    },
+    "balance": {
+      "type": "integer"
+    },
+    "billingmonth": {
+      "type": "integer"
+    },
+    "billingyear": {
+      "type": "integer"
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "indebt": {
+      "type": "boolean"
+    },
+    "address": {
+      "type": "string"
+    },
+    "neighborhood": {
+      "type": "string"
+    },
+    "client_name": {
+      "type": "string"
+    },
+    "dni": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "services"
+    }
+  }
+}

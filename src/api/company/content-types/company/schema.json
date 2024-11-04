@@ -1,0 +1,109 @@
+{
+  "kind": "collectionType",
+  "collectionName": "companies",
+  "info": {
+    "singularName": "company",
+    "pluralName": "companies",
+    "displayName": "COMPANY",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "users_permissions_users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "companies"
+    },
+    "cities": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::city.city",
+      "mappedBy": "company"
+    },
+    "clienttypes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::clienttype.clienttype",
+      "mappedBy": "company"
+    },
+    "services": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::service.service",
+      "mappedBy": "company"
+    },
+    "tickets": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ticket.ticket",
+      "mappedBy": "company"
+    },
+    "invoices": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::invoice.invoice",
+      "mappedBy": "company"
+    },
+    "legal_notes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::legal-note.legal-note",
+      "mappedBy": "company"
+    },
+    "naps": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::nap.nap",
+      "mappedBy": "company"
+    },
+    "mikrotiks": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::mikrotik.mikrotik",
+      "mappedBy": "company"
+    },
+    "monthlybills": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::monthlybill.monthlybill",
+      "mappedBy": "company"
+    },
+    "normalized_clients": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::normalized-client.normalized-client",
+      "mappedBy": "company"
+    },
+    "plans": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::plan.plan",
+      "mappedBy": "company"
+    },
+    "tickettypes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tickettype.tickettype",
+      "mappedBy": "company"
+    },
+    "whatsappcontacts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::whatsappcontact.whatsappcontact",
+      "mappedBy": "company"
+    },
+    "users": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "preferredcompany"
+    }
+  }
+}

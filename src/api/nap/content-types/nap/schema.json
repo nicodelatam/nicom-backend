@@ -1,0 +1,61 @@
+{
+  "kind": "collectionType",
+  "collectionName": "naps",
+  "info": {
+    "singularName": "nap",
+    "pluralName": "naps",
+    "displayName": "nap",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "code": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "neighborhood": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::neighborhood.neighborhood",
+      "inversedBy": "naps"
+    },
+    "city": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::city.city",
+      "inversedBy": "naps"
+    },
+    "technology": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::technology.technology",
+      "inversedBy": "naps"
+    },
+    "naptype": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::naptype.naptype",
+      "inversedBy": "naps"
+    },
+    "ports": {
+      "type": "integer"
+    },
+    "services": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::service.service",
+      "mappedBy": "naps"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "naps"
+    }
+  }
+}

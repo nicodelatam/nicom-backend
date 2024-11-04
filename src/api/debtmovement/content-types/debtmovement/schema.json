@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "debtmovements",
+  "info": {
+    "singularName": "debtmovement",
+    "pluralName": "debtmovements",
+    "displayName": "debtmovement",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "offer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::offer.offer",
+      "inversedBy": "debtmovements"
+    },
+    "isindebt": {
+      "type": "boolean",
+      "default": false
+    },
+    "isretired": {
+      "type": "boolean",
+      "default": false
+    },
+    "technician": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "debtmovements"
+    },
+    "comment": {
+      "type": "string"
+    },
+    "city": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::city.city",
+      "inversedBy": "debtmovements"
+    },
+    "service": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::service.service",
+      "inversedBy": "debtmovements"
+    }
+  }
+}

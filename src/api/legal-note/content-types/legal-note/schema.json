@@ -1,0 +1,67 @@
+{
+  "kind": "collectionType",
+  "collectionName": "legal_notes",
+  "info": {
+    "singularName": "legal-note",
+    "pluralName": "legal-notes",
+    "displayName": "legal-note",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "debit": {
+      "type": "integer"
+    },
+    "biller": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "legal_notes"
+    },
+    "invoices": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::invoice.invoice",
+      "mappedBy": "legal_notes"
+    },
+    "credit": {
+      "type": "integer"
+    },
+    "concept": {
+      "type": "string"
+    },
+    "invoice_movements": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::invoice-movement.invoice-movement",
+      "mappedBy": "legal_note"
+    },
+    "city": {
+      "type": "string"
+    },
+    "clienttype": {
+      "type": "string"
+    },
+    "service": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::service.service",
+      "inversedBy": "legal_notes"
+    },
+    "cancelled": {
+      "type": "boolean"
+    },
+    "cancelreason": {
+      "type": "string"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "legal_notes"
+    }
+  }
+}

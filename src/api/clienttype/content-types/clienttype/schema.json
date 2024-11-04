@@ -1,0 +1,64 @@
+{
+  "kind": "collectionType",
+  "collectionName": "clienttypes",
+  "info": {
+    "singularName": "clienttype",
+    "pluralName": "clienttypes",
+    "displayName": "clienttype",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string"
+    },
+    "tickets": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ticket.ticket",
+      "mappedBy": "clienttype"
+    },
+    "users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "clienttypes"
+    },
+    "tickettypes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tickettype.tickettype",
+      "mappedBy": "clienttypes"
+    },
+    "billingperiods": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::billingperiod.billingperiod",
+      "mappedBy": "clienttype"
+    },
+    "services": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::service.service",
+      "mappedBy": "clienttype"
+    },
+    "user_preferred_clienttype": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "preferredclienttype"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "clienttypes"
+    }
+  }
+}

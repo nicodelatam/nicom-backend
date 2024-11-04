@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "offermovements",
+  "info": {
+    "singularName": "offermovement",
+    "pluralName": "offermovements",
+    "displayName": "offermovement",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "offer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::offer.offer",
+      "inversedBy": "offermovements"
+    },
+    "technician": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "offermovements"
+    },
+    "details": {
+      "type": "string"
+    },
+    "service": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::service.service",
+      "inversedBy": "offermovements"
+    }
+  }
+}

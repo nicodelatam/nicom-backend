@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "service_addresses",
+  "info": {
+    "singularName": "service-address",
+    "pluralName": "service-addresses",
+    "displayName": "service-address"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "address": {
+      "type": "string"
+    },
+    "neighborhood": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::neighborhood.neighborhood",
+      "inversedBy": "service_addresses"
+    },
+    "service": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::service.service",
+      "inversedBy": "service_addresses"
+    }
+  }
+}

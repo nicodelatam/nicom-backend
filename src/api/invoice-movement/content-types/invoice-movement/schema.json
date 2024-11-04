@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "invoice_movements",
+  "info": {
+    "singularName": "invoice-movement",
+    "pluralName": "invoice-movements",
+    "displayName": "invoice-movement",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "amount": {
+      "type": "integer"
+    },
+    "details": {
+      "type": "string"
+    },
+    "invoice": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::invoice.invoice",
+      "inversedBy": "invoice_movements"
+    },
+    "biller": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "invoice_movements"
+    },
+    "legal_note": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::legal-note.legal-note",
+      "inversedBy": "invoice_movements"
+    },
+    "concept": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    }
+  }
+}

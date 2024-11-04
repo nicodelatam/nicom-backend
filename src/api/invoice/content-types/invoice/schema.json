@@ -1,0 +1,91 @@
+{
+  "kind": "collectionType",
+  "collectionName": "invoices",
+  "info": {
+    "singularName": "invoice",
+    "pluralName": "invoices",
+    "displayName": "invoice",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "balance": {
+      "type": "integer"
+    },
+    "month": {
+      "type": "integer"
+    },
+    "year": {
+      "type": "integer"
+    },
+    "type": {
+      "type": "string"
+    },
+    "offer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::offer.offer",
+      "inversedBy": "invoices"
+    },
+    "concept": {
+      "type": "string"
+    },
+    "payed": {
+      "type": "boolean"
+    },
+    "partial": {
+      "type": "boolean"
+    },
+    "indebt": {
+      "type": "boolean"
+    },
+    "invoice_movements": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::invoice-movement.invoice-movement",
+      "mappedBy": "invoice"
+    },
+    "invoice_type": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::invoice-type.invoice-type",
+      "inversedBy": "invoices"
+    },
+    "value": {
+      "type": "integer"
+    },
+    "details": {
+      "type": "string"
+    },
+    "legal_notes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::legal-note.legal-note",
+      "inversedBy": "invoices"
+    },
+    "service": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::service.service",
+      "inversedBy": "invoices"
+    },
+    "cancelled": {
+      "type": "boolean"
+    },
+    "cancelreason": {
+      "type": "string"
+    },
+    "limit": {
+      "type": "string"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "invoices"
+    }
+  }
+}

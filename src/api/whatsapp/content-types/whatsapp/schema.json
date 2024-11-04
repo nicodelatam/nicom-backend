@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "whatsapps",
+  "info": {
+    "singularName": "whatsapp",
+    "pluralName": "whatsapps",
+    "displayName": "whatsapp",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "phone": {
+      "type": "string"
+    },
+    "payload": {
+      "type": "json"
+    },
+    "to": {
+      "type": "string"
+    }
+  }
+}
