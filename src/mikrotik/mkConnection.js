@@ -4,10 +4,12 @@ module.exports.GTEL = async function (
   ) {
     const ip = mikrotikHost.split(":")[0]
     const port = mikrotikHost.split(":")[1]
+    const access = mikrotikHost.split(":")[2]
+    const secret = mikrotikHost.split(":")[3]
     const mkobj = new RouterOSAPI({
       host: ip,
-      user: "remoto",
-      password: process.env.MIKROTIK_API_SECRET,
+      user: access,
+      password: secret,
       port: port,
     });
     return mkobj
