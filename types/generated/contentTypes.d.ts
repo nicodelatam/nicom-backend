@@ -1163,6 +1163,11 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       'oneToMany',
       'plugin::users-permissions.user'
     >;
+    nit: Attribute.String;
+    address: Attribute.String;
+    phone: Attribute.String;
+    email: Attribute.String;
+    logo: Attribute.Media<'images'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

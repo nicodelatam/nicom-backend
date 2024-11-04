@@ -104,6 +104,29 @@
       "relation": "oneToMany",
       "target": "plugin::users-permissions.user",
       "mappedBy": "preferredcompany"
+    },
+    "nit": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "short_name": {
+      "type": "string"
     }
   }
 }
