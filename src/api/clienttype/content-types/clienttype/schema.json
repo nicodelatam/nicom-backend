@@ -54,9 +54,9 @@
       "target": "plugin::users-permissions.user",
       "mappedBy": "preferredclienttype"
     },
-    "company": {
+    "companies": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::company.company",
       "inversedBy": "clienttypes"
     }

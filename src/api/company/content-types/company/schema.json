@@ -29,9 +29,9 @@
     },
     "clienttypes": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::clienttype.clienttype",
-      "mappedBy": "company"
+      "mappedBy": "companies"
     },
     "services": {
       "type": "relation",

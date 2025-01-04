@@ -1052,9 +1052,9 @@ export interface ApiClienttypeClienttype extends Schema.CollectionType {
       'oneToMany',
       'plugin::users-permissions.user'
     >;
-    company: Attribute.Relation<
+    companies: Attribute.Relation<
       'api::clienttype.clienttype',
-      'manyToOne',
+      'manyToMany',
       'api::company.company'
     >;
     createdAt: Attribute.DateTime;
@@ -1100,7 +1100,7 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     >;
     clienttypes: Attribute.Relation<
       'api::company.company',
-      'oneToMany',
+      'manyToMany',
       'api::clienttype.clienttype'
     >;
     services: Attribute.Relation<
