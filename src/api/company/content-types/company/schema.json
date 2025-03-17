@@ -127,6 +127,15 @@
     },
     "short_name": {
       "type": "string"
+    },
+    "meta_endpoint": {
+      "type": "string"
+    },
+    "meta_template": {
+      "type": "string"
+    },
+    "meta_token": {
+      "type": "string"
     }
   }
 }

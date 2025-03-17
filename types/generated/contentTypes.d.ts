@@ -1169,6 +1169,9 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     email: Attribute.String;
     logo: Attribute.Media<'images'>;
     short_name: Attribute.String;
+    meta_endpoint: Attribute.String;
+    meta_template: Attribute.String;
+    meta_token: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
