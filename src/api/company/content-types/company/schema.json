@@ -136,6 +136,9 @@
     },
     "meta_token": {
       "type": "string"
+    },
+    "meta_ticket_template": {
+      "type": "string"
     }
   }
 }
