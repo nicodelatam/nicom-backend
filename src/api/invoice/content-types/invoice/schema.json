@@ -101,6 +101,12 @@
     "sent": {
       "type": "boolean",
       "default": false
+    },
+    "resend": {
+      "type": "integer"
+    },
+    "resend_at": {
+      "type": "string"
     }
   }
 }

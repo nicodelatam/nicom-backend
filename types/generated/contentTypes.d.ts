@@ -1495,6 +1495,8 @@ export interface ApiInvoiceInvoice extends Schema.CollectionType {
     >;
     image: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     sent: Attribute.Boolean & Attribute.DefaultTo<false>;
+    resend: Attribute.Integer;
+    resend_at: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
