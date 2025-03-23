@@ -1493,6 +1493,8 @@ export interface ApiInvoiceInvoice extends Schema.CollectionType {
       'manyToOne',
       'api::company.company'
     >;
+    image: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    sent: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

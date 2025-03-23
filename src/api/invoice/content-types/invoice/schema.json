@@ -86,6 +86,21 @@
       "relation": "manyToOne",
       "target": "api::company.company",
       "inversedBy": "invoices"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "sent": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
