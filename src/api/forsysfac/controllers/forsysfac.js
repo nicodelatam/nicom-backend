@@ -58,7 +58,7 @@ module.exports = {
       const type = ctx.request.body.type === 'TV' ? 2 : 1;
       const city = ctx.request.body.city === 'MARIQUITA' ? 1 : 2;
       
-      const neighborhood = await strapi.entityService.findMany('api::neighborhood.neighborhood', {
+      const neighborhood = await strapi.documents('api::neighborhood.neighborhood').findMany({
         filters: {
           name: ctx.request.body.neighborhood
         }
@@ -86,7 +86,7 @@ module.exports = {
         email: ctx.request.body.email,
         publishedAt: new Date(),
       }
-      const entry = await strapi.entityService.create('api::client.client', {
+      const entry = await strapi.documents('api::client.client').create({
         data
       });
       return {
