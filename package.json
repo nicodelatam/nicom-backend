@@ -1,8 +1,8 @@
 {
-  "name": "strapi-4",
+  "name": "nicom-backend",
   "private": true,
-  "version": "0.1.0",
-  "description": "GTEL Integrado",
+  "version": "2.0.10",
+  "description": "Nicom Data Management System",
   "scripts": {
     "develop": "strapi develop",
     "start": "strapi start",
@@ -14,13 +14,13 @@
     "@strapi/strapi": "5.11.3",
     "formdata-node": "^5.0.0",
     "mysql": "2.18.1",
+    "mysql2": "^3.14.0",
     "node-fetch": "2.6.1",
     "node-routeros": "^1.6.9",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
     "strapi-plugin-fuzzy-search": "3.0.0",
-    "strapi-plugin-transformer": "3.1.2",
     "styled-components": "^6.0.0"
   },
   "author": {

@@ -1,15 +1,5 @@
 module.exports = ({ env }) => ({
   // ..
-  'transformer': {
-    enabled: true,
-    config: {
-      prefix: '/api/',
-      responseTransforms: {
-        removeAttributesKey: true,
-        removeDataKey: true,
-      }
-    }
-  },
   upload: {
     config: {
       sizeLimit: 250 * 1024 * 1024, // 256mb in bytes
