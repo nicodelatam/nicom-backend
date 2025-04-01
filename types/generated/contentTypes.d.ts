@@ -1498,6 +1498,9 @@ export interface ApiInvoiceInvoice extends Schema.CollectionType {
     sent: Attribute.Boolean & Attribute.DefaultTo<false>;
     resend: Attribute.Integer;
     resend_at: Attribute.String;
+    whatsapp_status: Attribute.String;
+    whatsapp_attempted_at: Attribute.DateTime;
+    whatsapp_error_message: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

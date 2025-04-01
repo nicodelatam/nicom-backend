@@ -107,6 +107,15 @@
     },
     "resend_at": {
       "type": "string"
+    },
+    "whatsapp_status": {
+      "type": "string"
+    },
+    "whatsapp_attempted_at": {
+      "type": "datetime"
+    },
+    "whatsapp_error_message": {
+      "type": "string"
     }
   }
 }
