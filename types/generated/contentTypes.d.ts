@@ -1655,6 +1655,7 @@ export interface ApiLegalNoteLegalNote extends Schema.CollectionType {
       'manyToOne',
       'api::company.company'
     >;
+    cancelledreason: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

@@ -62,6 +62,9 @@
       "relation": "manyToOne",
       "target": "api::company.company",
       "inversedBy": "legal_notes"
+    },
+    "cancelledreason": {
+      "type": "string"
     }
   }
 }
