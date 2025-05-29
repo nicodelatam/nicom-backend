@@ -45,6 +45,11 @@
     "finished": {
       "type": "boolean",
       "default": true
-    }
+    },
+    "processType": { "type": "enumeration", "enum": ["manual", "balance"] },
+    "minimumBalance": { "type": "integer" },
+    "totalBalance": { "type": "integer" },
+    "averageBalance": { "type": "integer" },
+    "servicesCodes": { "type": "text" }
   }
 }

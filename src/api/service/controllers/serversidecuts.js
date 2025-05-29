@@ -81,7 +81,7 @@ module.exports = {
                 processCodesWithErrors.push({ code: codes[i], error: response.message })
               }
             }
-          } else {
+          } else if (searchCity.mikrotiks.length === 1) {
             const mikrotikHost = searchCity.mikrotiks[0].ip
             const response = await mkSetClientPlanInformation(mikrotikHost, { newClientPlan, dni: service.dni, code: service.code, kick })
   
@@ -90,6 +90,8 @@ module.exports = {
             } else {
               processCodesWithErrors.push({ code: codes[i], error: response.message })
             }
+          } else {
+            processCodesWithErrors.push({ code: codes[i], error: 'No existe el mikrotik o es cliente de tv' })
           }
         }
       })

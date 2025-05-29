@@ -898,6 +898,11 @@ export interface ApiBillingperiodBillingperiod extends Schema.CollectionType {
     errorList: Attribute.Text;
     successes: Attribute.Integer;
     finished: Attribute.Boolean & Attribute.DefaultTo<true>;
+    processType: Attribute.Enumeration<['manual', 'balance']>;
+    minimumBalance: Attribute.Integer;
+    totalBalance: Attribute.Integer;
+    averageBalance: Attribute.Integer;
+    servicesCodes: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
