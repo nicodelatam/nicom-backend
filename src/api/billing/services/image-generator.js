@@ -9,10 +9,39 @@ module.exports = ({ strapi }) => {
 
     const getBrowser = async () => {
         if (!browserInstance || !browserInstance.isConnected()) {
-            browserInstance = await puppeteer.launch({
+            const launchOptions = {
                 headless: 'new',
                 args: ['--no-sandbox', '--disable-setuid-sandbox']
-            });
+            };
+
+            // Check for custom executable path (e.g. for ARM servers)
+            if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+                launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+            } else if (process.platform === 'linux') {
+                // Try to find chromium on common paths if on Linux and no env var set
+                const commonPaths = [
+                    '/usr/bin/chromium-browser',
+                    '/usr/bin/chromium',
+                    '/usr/bin/google-chrome-stable'
+                ];
+
+                for (const p of commonPaths) {
+                    if (fs.existsSync(p)) {
+                        launchOptions.executablePath = p;
+                        break;
+                    }
+                }
+            }
+
+            try {
+                browserInstance = await puppeteer.launch(launchOptions);
+            } catch (error) {
+                strapi.log.error('Failed to launch browser:', error);
+                strapi.log.error('Platform:', process.platform);
+                strapi.log.error('Arch:', process.arch);
+                strapi.log.error('Launch Options:', JSON.stringify(launchOptions));
+                throw error;
+            }
         }
         return browserInstance;
     };
