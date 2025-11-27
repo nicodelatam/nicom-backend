@@ -907,6 +907,7 @@ export interface ApiBillingBatchBillingBatch extends Schema.CollectionType {
       'api::company.company'
     >;
     results: Attribute.JSON;
+    serviceIds: Attribute.JSON;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

@@ -59,6 +59,9 @@
         },
         "results": {
             "type": "json"
+        },
+        "serviceIds": {
+            "type": "json"
         }
     }
 }

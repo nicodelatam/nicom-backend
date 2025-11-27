@@ -20,24 +20,24 @@ module.exports = ({ strapi }) => ({
                 data: { status: 'processing' }
             });
 
-            const { month, year, limit, city, clienttype, company } = batch;
+            const { month, year, limit, city, clienttype, company, serviceIds } = batch;
+
+            // Build filters
+            const filters = {
+                active: true,
+                indebt: false,
+                city: city.id,
+                clienttype: clienttype.id,
+            };
+
+            // If specific services were selected, filter by them
+            if (serviceIds && Array.isArray(serviceIds) && serviceIds.length > 0) {
+                filters.id = { $in: serviceIds };
+            }
 
             // Fetch active services
-            // Note: Adjust filters based on exact requirements (active=true, indebt=false, etc.)
-            // Also need to handle pagination or fetch all. For 1000+ items, fetching all might be heavy but manageable in Node.
-            // Better to fetch in chunks if memory is a concern, but for simplicity let's try fetching all first or use a large limit.
             const services = await strapi.entityService.findMany('api::service.service', {
-                filters: {
-                    active: true,
-                    indebt: false,
-                    city: city.id,
-                    clienttype: clienttype.id,
-                    // Exclude if already billed? Logic from frontend:
-                    // "filters.monthlybills" logic was complex in frontend.
-                    // Ideally we check if a bill exists for this month/year.
-                    // But Strapi filters on related fields can be tricky.
-                    // Let's fetch all active candidates and filter in code if needed, or use deep filtering.
-                },
+                filters,
                 populate: ['offer', 'clienttype', 'city', 'company', 'normalized_client'], // Populate needed fields
                 limit: -1 // Fetch all
             });
@@ -94,7 +94,8 @@ module.exports = ({ strapi }) => ({
                         service: service.id,
                         invoice_type: 1, // Hardcoded as per frontend
                         limit: limit,
-                        company: company.id
+                        company: company.id,
+                        publishedAt: new Date(),
                     };
 
                     const invoice = await strapi.entityService.create('api::invoice.invoice', {
@@ -141,12 +142,10 @@ module.exports = ({ strapi }) => ({
 
                 processed++;
 
-                // Update progress every 10 items
-                if (processed % 10 === 0) {
+                // Update progress: every 1 item for the first 5, then every 5 items
+                if (processed <= 5 || processed % 5 === 0) {
                     await strapi.entityService.update('api::billing-batch.billing-batch', batchId, {
-                        data: { progress: processed, logs: logs.slice(-20) } // Keep last 20 logs in DB to save space? Or append?
-                        // If we append all logs, it might get too big. Let's store all for now but be careful.
-                        // Actually, let's just update progress. Logs can be updated at the end or less frequently.
+                        data: { progress: processed, logs: logs } // Save all logs for now to ensure visibility
                     });
                 }
             }

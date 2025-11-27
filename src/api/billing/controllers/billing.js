@@ -3,7 +3,7 @@
 module.exports = {
     async generate(ctx) {
         try {
-            const { month, year, limit, city, clienttype, company } = ctx.request.body;
+            const { month, year, limit, city, clienttype, company, serviceIds } = ctx.request.body;
 
             // Basic validation
             if (!month || !year || !limit || !city || !clienttype || !company) {
@@ -23,6 +23,7 @@ module.exports = {
                     city,
                     clienttype,
                     company,
+                    serviceIds: serviceIds || [], // Store selected IDs
                     results: {
                         success: 0,
                         error: 0,
