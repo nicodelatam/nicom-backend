@@ -22,6 +22,10 @@
             ],
             "default": "pending"
         },
+        "finalized": {
+            "type": "boolean",
+            "default": false
+        },
         "progress": {
             "type": "integer",
             "default": 0

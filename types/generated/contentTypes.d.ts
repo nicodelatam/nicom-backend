@@ -885,6 +885,7 @@ export interface ApiBillingBatchBillingBatch extends Schema.CollectionType {
       ['pending', 'processing', 'completed', 'failed']
     > &
       Attribute.DefaultTo<'pending'>;
+    finalized: Attribute.Boolean & Attribute.DefaultTo<false>;
     progress: Attribute.Integer & Attribute.DefaultTo<0>;
     total: Attribute.Integer & Attribute.DefaultTo<0>;
     logs: Attribute.JSON;
