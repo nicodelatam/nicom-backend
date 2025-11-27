@@ -17,7 +17,7 @@ module.exports = ({ strapi }) => ({
         try {
             // Update status to processing
             await strapi.entityService.update('api::billing-batch.billing-batch', batchId, {
-                data: { status: 'processing' }
+                data: { status: 'processing', logs: [`Inicio del proceso: ${new Date().toLocaleString()}`] }
             });
 
             const { month, year, limit, city, clienttype, company, serviceIds } = batch;
@@ -49,9 +49,33 @@ module.exports = ({ strapi }) => ({
 
             let processed = 0;
             const results = { success: 0, error: 0, skipped: 0 };
-            const logs = [];
+            const logs = [`Total servicios a procesar: ${services.length}`];
+            const startTime = Date.now();
 
-            for (const service of services) {
+            // Helper for concurrency
+            const runInBatches = async (items, batchSize, fn) => {
+                for (let i = 0; i < items.length; i += batchSize) {
+                    const chunk = items.slice(i, i + batchSize);
+                    const chunkStartTime = Date.now();
+
+                    await Promise.all(chunk.map(item => fn(item)));
+
+                    const chunkDuration = Date.now() - chunkStartTime;
+                    processed += chunk.length;
+
+                    // Log progress
+                    const progressMsg = `Procesados ${Math.min(processed, items.length)}/${items.length} (Lote de ${chunk.length} en ${chunkDuration}ms)`;
+                    logs.push(progressMsg);
+
+                    // Update DB every batch (or every few batches if very fast)
+                    await strapi.entityService.update('api::billing-batch.billing-batch', batchId, {
+                        data: { progress: processed, logs: logs }
+                    });
+                }
+            };
+
+            // Process function for a single service
+            const processService = async (service) => {
                 try {
                     // 1. Check if invoice already exists
                     const existingInvoices = await strapi.entityService.findMany('api::invoice.invoice', {
@@ -65,34 +89,32 @@ module.exports = ({ strapi }) => ({
 
                     if (existingInvoices.length > 0) {
                         results.skipped++;
-                        logs.push(`Service ${service.code}: Skipped (Already billed)`);
-                        continue;
+                        // logs.push(`Service ${service.code}: Skipped (Already billed)`); // Reduce noise
+                        return;
                     }
 
                     // 2. Check for Offer
                     if (!service.offer) {
                         results.skipped++;
                         logs.push(`Service ${service.code}: Skipped (No offer)`);
-                        continue;
+                        return;
                     }
 
                     // 3. Create Invoice
-                    // Note: Frontend used POST /invoices which maps to create.
-                    // We use entityService.create directly.
                     const invoiceData = {
-                        balance: service.offer.price, // Assuming price is on offer
+                        balance: service.offer.price,
                         value: service.offer.price,
                         month: month,
                         year: year,
                         type: 'FACTURA',
                         offer: service.offer.id,
                         concept: 'FACTURACION MENSUAL',
-                        details: `Factura ${month}/${year}`, // Simplified
+                        details: `Factura ${month}/${year}`,
                         payed: false,
                         partial: false,
                         indebt: false,
                         service: service.id,
-                        invoice_type: 1, // Hardcoded as per frontend
+                        invoice_type: 1,
                         limit: limit,
                         company: company.id,
                         publishedAt: new Date(),
@@ -102,17 +124,11 @@ module.exports = ({ strapi }) => ({
                         data: invoiceData
                     });
 
-                    // 4. Send WhatsApp
-                    // Need to fetch company config if not fully populated or if secrets are hidden
-                    // Assuming company object has meta_token and meta_endpoint
-                    // If not, might need to re-fetch company with secrets if they are private fields
-
                     // 3.5 Generate Image
                     let imageUrl = null;
                     try {
                         const image = await strapi.service('api::billing.image-generator').generate(invoice, service, company);
                         if (image && image.url) {
-                            // Strapi upload URL might be relative
                             const baseUrl = strapi.config.get('server.url') || 'http://localhost:1337';
                             imageUrl = image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`;
                         }
@@ -121,10 +137,10 @@ module.exports = ({ strapi }) => ({
                         logs.push(`Service ${service.code}: Image generation failed - ${imgErr.message}`);
                     }
 
+                    // 4. Send WhatsApp
                     if (company.meta_token && company.meta_endpoint && company.meta_template) {
                         try {
                             await this.sendWhatsapp(service, invoice, company, month, limit, imageUrl);
-                            // Update invoice status? Frontend did: updateInvoiceWhatsappStatus
                             await strapi.entityService.update('api::invoice.invoice', invoice.id, {
                                 data: {
                                     whatsapp_status: 'SENT',
@@ -141,8 +157,6 @@ module.exports = ({ strapi }) => ({
                                     whatsapp_attempted_at: new Date(),
                                 }
                             });
-                            // We count this as success for billing, but maybe note the warning?
-                            // For now, let's count as success since invoice exists.
                         }
                     }
 
@@ -153,16 +167,13 @@ module.exports = ({ strapi }) => ({
                     results.error++;
                     logs.push(`Service ${service.code || service.id}: Error - ${err.message}`);
                 }
+            };
 
-                processed++;
+            // Run with concurrency of 10
+            await runInBatches(services, 10, processService);
 
-                // Update progress: every 1 item for the first 5, then every 5 items
-                if (processed <= 5 || processed % 5 === 0) {
-                    await strapi.entityService.update('api::billing-batch.billing-batch', batchId, {
-                        data: { progress: processed, logs: logs } // Save all logs for now to ensure visibility
-                    });
-                }
-            }
+            const totalTime = Date.now() - startTime;
+            logs.push(`Proceso finalizado en ${(totalTime / 1000).toFixed(2)} segundos.`);
 
             // Final update
             await strapi.entityService.update('api::billing-batch.billing-batch', batchId, {
@@ -170,7 +181,7 @@ module.exports = ({ strapi }) => ({
                     status: 'completed',
                     progress: processed,
                     results,
-                    logs: logs // Save full logs at the end
+                    logs: logs
                 }
             });
 
