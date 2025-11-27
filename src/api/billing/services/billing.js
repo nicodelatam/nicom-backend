@@ -107,9 +107,23 @@ module.exports = ({ strapi }) => ({
                     // Assuming company object has meta_token and meta_endpoint
                     // If not, might need to re-fetch company with secrets if they are private fields
 
+                    // 3.5 Generate Image
+                    let imageUrl = null;
+                    try {
+                        const image = await strapi.service('api::billing.image-generator').generate(invoice, service, company);
+                        if (image && image.url) {
+                            // Strapi upload URL might be relative
+                            const baseUrl = strapi.config.get('server.url') || 'http://localhost:1337';
+                            imageUrl = image.url.startsWith('http') ? image.url : `${baseUrl}${image.url}`;
+                        }
+                    } catch (imgErr) {
+                        strapi.log.error(`Image generation failed for ${service.code}:`, imgErr);
+                        logs.push(`Service ${service.code}: Image generation failed - ${imgErr.message}`);
+                    }
+
                     if (company.meta_token && company.meta_endpoint && company.meta_template) {
                         try {
-                            await this.sendWhatsapp(service, invoice, company, month, limit);
+                            await this.sendWhatsapp(service, invoice, company, month, limit, imageUrl);
                             // Update invoice status? Frontend did: updateInvoiceWhatsappStatus
                             await strapi.entityService.update('api::invoice.invoice', invoice.id, {
                                 data: {
@@ -171,7 +185,7 @@ module.exports = ({ strapi }) => ({
         }
     },
 
-    async sendWhatsapp(service, invoice, company, month, limit) {
+    async sendWhatsapp(service, invoice, company, month, limit, imageUrl) {
         const phoneNumber = service.phone; // Or normalized_client.phone
 
         if (!phoneNumber) {
@@ -212,19 +226,8 @@ module.exports = ({ strapi }) => ({
                             {
                                 type: 'image',
                                 image: {
-                                    // Use a default image or generated one. 
-                                    // Frontend generated an image from HTML. Backend cannot easily do that without headless browser.
-                                    // For now, we might need to skip the image or use a static one.
-                                    // The user said "pass the process to backend". 
-                                    // If image generation is required, we need a solution.
-                                    // Frontend logic: `generateImageFromBill`.
-                                    // If we can't generate image in backend easily, we might send without image or use a placeholder.
-                                    // Let's use a placeholder or the company logo if available.
-                                    // The user didn't explicitly ask for image generation in backend, but implied "process".
-                                    // Generating image from HTML in Node requires Puppeteer/Playwright.
-                                    // Given the constraints and "robustness", maybe we skip image for now or use a static link.
-                                    // Let's check if we can use a static link from config or company.
-                                    link: 'https://gteltelecomunicaciones.com/test.jpg' // Placeholder from frontend code
+                                    // Use generated image or fallback
+                                    link: imageUrl || 'https://gteltelecomunicaciones.com/test.jpg'
                                 }
                             }
                         ]

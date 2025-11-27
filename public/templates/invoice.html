@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recibo Netplus</title>
+    <style>
+        /* Estilos generales comprimidos verticalmente */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.2;
+        }
+        
+        .factura-container {
+            width: 100%;
+            max-width: 210mm; /* Ancho A4 */
+            max-height: 155.9mm; /* Mitad de alto A4 (297mm/2) + 5% adicional */
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+        
+        /* Encabezado comprimido */
+        .header {
+            display: flex;
+            padding: 10px;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .direccion-empresa {
+            font-size: 11px;
+            text-align: left;
+            margin-top: 4px;
+            color: #555;
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .documento-info {
+            text-align: right;
+        }
+        
+        .recibo-box {
+            border: 1px solid #009fdf;
+            padding: 5px 10px;
+            text-align: center;
+            margin-bottom: 5px;
+            border-radius: 4px;
+        }
+        
+        .recibo-titulo {
+            font-weight: 700;
+            font-size: 16px;
+            color: #009fdf;
+        }
+        
+        .recibo-numero {
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        
+        .codigo-box {
+            border: 1px solid #009fdf;
+            padding: 5px 10px;
+            text-align: center;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        /* Tablas y datos comprimidos */
+        .datos-personales {
+            background-color: #009fdf;
+            color: white;
+            text-align: center;
+            font-weight: 700;
+            padding: 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 0;
+        }
+        
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 5px 8px;
+            text-align: left;
+            font-size: 12px;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 700;
+            color: #495057;
+        }
+        
+        td {
+            font-weight: 500;
+        }
+        
+        .conceptos-titulo {
+            background-color: #009fdf;
+            color: white;
+            text-align: center;
+            font-weight: 700;
+            padding: 5px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
+        }
+        
+        /* Estado de pago comprimido */
+        .estado-pago {
+            display: flex;
+            align-items: center;
+            padding: 6px;
+        }
+        
+        .pagado {
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+        
+        .total-pendiente {
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        /* Sección de contacto comprimida */
+        .contacto {
+            text-align: right;
+            padding: 6px;
+            font-weight: 500;
+            font-size: 12px;
+        }
+        
+        .contacto div {
+            margin-bottom: 2px;
+        }
+        
+        /* Equilibrio de columnas */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        /* Fechas de emisión y pago */
+        .fechas-box {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 5px 10px;
+            margin-top: 0;
+            font-size: 12px;
+        }
+        
+        .fecha-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .fecha-label {
+            font-weight: 700;
+            margin-right: 5px;
+            color: #495057;
+        }
+        
+        .fecha-value {
+            font-weight: 600;
+            color: #009fdf;
+        }
+        
+        .fecha-pago-value {
+            font-weight: 600;
+            color: #ff0000;
+        }
+        
+        /* Pie de página comprimido */
+        .footer {
+            border-top: 1px solid #f0f0f0;
+            padding: 8px;
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #666;
+        }
+
+        strong {
+            font-weight: 900;
+        }
+    </style>
+</head>
+<body>
+    <div class="factura-container">
+        <!-- Encabezado con logo e información del recibo -->
+        <div class="header">
+            <div class="logo-section">
+                <div>
+                    <div class="logo">
+                        <img src="https://netplusinternet.net/logo.png" width="160px" />
+                    </div>
+                    <div class="direccion-empresa">
+                        <div id="id-empresa"><strong>901815823-1</strong></div>
+                        <div id="direccion-sucursal"><strong>MANZANA 2 CASA 12 HONORIO MORENO</strong></div>
+                    </div>
+                </div>
+            </div>
+            <div class="documento-info">
+                <div class="recibo-box">
+                    <div class="recibo-titulo">RECIBO</div>
+                    <div class="recibo-numero" id="numero-recibo">2655</div>
+                </div>
+                <div class="codigo-box">
+                    CÓDIGO: <span id="codigo-usuario">202461</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fechas de emisión y límite de pago -->
+        <div class="fechas-box">
+            <div class="fecha-item">
+                <div class="fecha-label">FECHA DE EMISIÓN:</div>
+                <div class="fecha-value" id="fecha-emision">01 de marzo de 2025</div>
+            </div>
+            <div class="fecha-item">
+                <div class="fecha-label">FECHA LÍMITE DE PAGO:</div>
+                <div class="fecha-pago-value" id="fecha-limite">05 de marzo de 2025</div>
+            </div>
+        </div>
+        
+        <!-- Sección de datos personales -->
+        <div class="datos-personales">DATOS PERSONALES DEL USUARIO</div>
+        
+        <table>
+            <tr>
+                <th><strong>NOMBRES Y APELLIDOS</strong></th>
+                <th><strong>NO. DOCUMENTO</strong></th>
+                <th><strong>SERVICIO</strong></th>
+            </tr>
+            <tr>
+                <td id="nombre-cliente">ANGIE JOHANA LEZAMA OSORIO</td>
+                <td id="documento-cliente">52999814</td>
+                <td id="servicio-cliente">40 MEGAS $65.000 AFILIACION $20.000</td>
+            </tr>
+        </table>
+        
+        <table>
+            <tr>
+                <th width="25%"><strong>DIRECCIÓN DE DOMICILIO</strong></th>
+                <th width="25%"><strong>BARRIO</strong></th>
+                <th width="25%"><strong>ID DEL USUARIO</strong></th>
+                <th width="25%"><strong>CELULAR</strong></th>
+            </tr>
+            <tr>
+                <td id="direccion-cliente">CALLE 8 No. 4 - 27</td>
+                <td id="barrio-cliente">EL CARMEN</td>
+                <td id="id-usuario">CÓDIGO: 202461</td>
+                <td id="celular-cliente">3106880179</td>
+            </tr>
+        </table>
+        
+        <table>
+            <tr>
+                <th width="50%"><strong>CORREO ELECTRÓNICO</strong></th>
+                <th width="50%"><strong>PLAN CONTRATADO</strong></th>
+            </tr>
+            <tr>
+                <td id="email-cliente">Carteracoisaludlaser@gmail.com</td>
+                <td id="plan-contratado">40 MEGAS $65.000 AFILIACION $20.000</td>
+            </tr>
+        </table>
+        
+        <!-- Sección de conceptos de pago -->
+        <div class="conceptos-titulo">CONCEPTOS DE PAGO</div>
+        
+        <table>
+            <tr>
+                <td width="50%" id="concepto-pago" style="padding: 10px; vertical-align: top; line-height: 1.4;">Pago Mes Marzo $65.000 pesos</td>
+                <td width="50%" id="fecha-pago" style="padding: 10px; vertical-align: top;">5 de marzo de 2025, 2:33 p. m.</td>
+            </tr>
+        </table>
+        
+        <!-- Sección de estado y contacto -->
+        <div class="contact-grid">
+            <table>
+                <tr>
+                    <td>
+                        <div class="estado-pago">
+                            <div class="pagado">PAGADO</div>
+                            <div class="total-pendiente">TOTAL PENDIENTE POR PAGAR: $0 pesos</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            
+            <table>
+                <tr>
+                    <td>
+                        <div class="contacto">
+                            <div><strong>LÍNEA DE ATENCIÓN:</strong> 3219121937</div>
+                            <div><strong>CORREO ELECTRÓNICO</strong></div>
+                            <div id="email-empresa">netplusinternet@hotmail.com</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
