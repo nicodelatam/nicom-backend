@@ -7,11 +7,12 @@ const fetch = require('node-fetch');
 module.exports = {
   async getMedia(ctx) {
     const mediaid = ctx.request.query.mediaid
-
-    const res = await fetch(`https://graph.facebook.com/v14.0/${mediaid}`, {
+    const meta_api_version = ctx.request.query.meta_api_version
+    const meta_token = ctx.request.query.meta_token
+    const res = await fetch(`https://graph.facebook.com/${meta_api_version}/${mediaid}`, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${process.env.META_TOKEN}`
+            Authorization: `Bearer ${meta_token}`
           }
         })
           .then(response => response.json())
