@@ -1235,6 +1235,9 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     meta_template: Attribute.String;
     meta_token: Attribute.String;
     meta_ticket_template: Attribute.String;
+    meta_api_version: Attribute.String;
+    meta_phone_id: Attribute.String;
+    meta_WBA_id: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

@@ -139,6 +139,15 @@
     },
     "meta_ticket_template": {
       "type": "string"
+    },
+    "meta_api_version": {
+      "type": "string"
+    },
+    "meta_phone_id": {
+      "type": "string"
+    },
+    "meta_WBA_id": {
+      "type": "string"
     }
   }
 }
