@@ -238,7 +238,7 @@ module.exports = ({ strapi }) => ({
                                 type: 'image',
                                 image: {
                                     // Use generated image or fallback
-                                    link: imageUrl || 'https://gteltelecomunicaciones.com/test.jpg'
+                                    link: imageUrl
                                 }
                             }
                         ]
@@ -258,9 +258,11 @@ module.exports = ({ strapi }) => ({
                     }
                 ]
             }
-        };
+        }; 
 
-        const response = await fetch(company.meta_endpoint, {
+        const url = `${company.meta_endpoint}/${company.meta_api_version}/${company.meta_phone_id}/messages`
+
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -270,6 +272,8 @@ module.exports = ({ strapi }) => ({
         });
 
         const data = await response.json();
+
+        strapi.log.info(JSON.stringify(data));
 
         if (data.error) {
             throw new Error(data.error.message);
