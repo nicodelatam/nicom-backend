@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recibo Netplus</title>
+    <title>Estado de Cuenta</title>
     <style>
-        /* Estilos generales comprimidos verticalmente */
+        /* Estilos generales */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -24,16 +24,15 @@
         .factura-container {
             width: 100%;
             max-width: 210mm; /* Ancho A4 */
-            max-height: 155.9mm; /* Mitad de alto A4 (297mm/2) + 5% adicional */
             margin: 0 auto;
             background-color: white;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             position: relative;
-            overflow: hidden;
             border-radius: 6px;
+            padding-bottom: 10px;
         }
         
-        /* Encabezado comprimido */
+        /* Encabezado */
         .header {
             display: flex;
             padding: 10px;
@@ -76,12 +75,12 @@
         
         .recibo-titulo {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 14px;
             color: #009fdf;
         }
         
         .recibo-numero {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             margin-top: 2px;
         }
@@ -95,7 +94,7 @@
             font-size: 13px;
         }
         
-        /* Tablas y datos comprimidos */
+        /* Tablas y datos */
         .datos-personales {
             background-color: #009fdf;
             color: white;
@@ -141,7 +140,48 @@
             font-size: 12px;
         }
         
-        /* Estado de pago comprimido */
+        /* Tabla de facturas pendientes */
+        .invoices-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .invoices-table th {
+            background-color: #f8f9fa;
+            font-weight: 700;
+            color: #495057;
+            text-align: center;
+            padding: 8px;
+            font-size: 11px;
+        }
+        
+        .invoices-table td {
+            padding: 6px 8px;
+            text-align: center;
+            font-size: 11px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .invoices-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .invoice-row-pending {
+            color: #d32f2f;
+        }
+        
+        .total-row {
+            background-color: #e3f2fd !important;
+            font-weight: 700;
+        }
+        
+        .total-row td {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1565c0;
+        }
+        
+        /* Estado de pago */
         .estado-pago {
             display: flex;
             align-items: center;
@@ -164,7 +204,7 @@
             font-size: 13px;
         }
         
-        /* Sección de contacto comprimida */
+        /* Sección de contacto */
         .contacto {
             text-align: right;
             padding: 6px;
@@ -213,17 +253,6 @@
             font-weight: 600;
             color: #ff0000;
         }
-        
-        /* Pie de página comprimido */
-        .footer {
-            border-top: 1px solid #f0f0f0;
-            padding: 8px;
-            margin-top: 8px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            color: #666;
-        }
 
         strong {
             font-weight: 900;
@@ -247,7 +276,7 @@
             </div>
             <div class="documento-info">
                 <div class="recibo-box">
-                    <div class="recibo-titulo">RECIBO</div>
+                    <div class="recibo-titulo">ESTADO DE CUENTA</div>
                     <div class="recibo-numero" id="numero-recibo">2655</div>
                 </div>
                 <div class="codigo-box">
@@ -299,25 +328,33 @@
             </tr>
         </table>
         
-        <table>
-            <tr>
-                <th width="50%"><strong>CORREO ELECTRÓNICO</strong></th>
-                <th width="50%"><strong>PLAN CONTRATADO</strong></th>
-            </tr>
-            <tr>
-                <td id="email-cliente">Carteracoisaludlaser@gmail.com</td>
-                <td id="plan-contratado">40 MEGAS $65.000 AFILIACION $20.000</td>
-            </tr>
-        </table>
+        <!-- Sección de facturas pendientes -->
+        <div class="conceptos-titulo">FACTURAS PENDIENTES POR PAGAR</div>
         
-        <!-- Sección de conceptos de pago -->
-        <div class="conceptos-titulo">CONCEPTOS DE PAGO</div>
-        
-        <table>
-            <tr>
-                <td width="50%" id="concepto-pago" style="padding: 10px; vertical-align: top; line-height: 1.4;">Pago Mes Marzo $65.000 pesos</td>
-                <td width="50%" id="fecha-pago" style="padding: 10px; vertical-align: top;">5 de marzo de 2025, 2:33 p. m.</td>
-            </tr>
+        <table class="invoices-table">
+            <thead>
+                <tr>
+                    <th width="15%">MES</th>
+                    <th width="15%">AÑO</th>
+                    <th width="40%">CONCEPTO</th>
+                    <th width="30%">VALOR PENDIENTE</th>
+                </tr>
+            </thead>
+            <tbody id="invoices-list">
+                <!-- Invoice rows will be inserted here dynamically -->
+                <tr class="invoice-row-pending">
+                    <td>MARZO</td>
+                    <td>2025</td>
+                    <td>Pago Mensualidad</td>
+                    <td>$65.000</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td colspan="3" style="text-align: right;"><strong>TOTAL A PAGAR:</strong></td>
+                    <td id="total-pendiente-valor"><strong>$65.000</strong></td>
+                </tr>
+            </tfoot>
         </table>
         
         <!-- Sección de estado y contacto -->
@@ -326,7 +363,7 @@
                 <tr>
                     <td>
                         <div class="estado-pago">
-                            <div class="pagado">PAGADO</div>
+                            <div class="pagado">PENDIENTE</div>
                             <div class="total-pendiente">TOTAL PENDIENTE POR PAGAR: $0 pesos</div>
                         </div>
                     </td>
