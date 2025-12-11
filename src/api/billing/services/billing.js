@@ -273,8 +273,6 @@ module.exports = ({ strapi }) => ({
 
         const data = await response.json();
 
-        strapi.log.info(JSON.stringify(data));
-
         if (data.error) {
             throw new Error(data.error.message);
         }
