@@ -132,7 +132,7 @@ module.exports.mkClientStatus = async function (
     // Helper function to safely query Mikrotik with timeout
     const safeWrite = async (command, params) => {
       // Use logic conn, allowing it seamlessly handle reconnections
-      const timeoutMs = 300; // 5 segundos de timeout
+      const timeoutMs = 3000; // 5 segundos de timeout
       
       const timeoutPromise = new Promise((_, reject) => {
         setTimeout(() => reject(new Error('Command timeout')), timeoutMs);
