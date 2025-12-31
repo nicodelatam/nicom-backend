@@ -13,6 +13,8 @@
     "@strapi/plugin-i18n": "4.25.9",
     "@strapi/plugin-users-permissions": "4.25.9",
     "@strapi/strapi": "4.25.9",
+    "ajv": "^8.17.1",
+    "caniuse-lite": "^1.0.30001718",
     "formdata-node": "^5.0.0",
     "mysql": "2.18.1",
     "node-fetch": "2.6.1",
