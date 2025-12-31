@@ -7,27 +7,36 @@ module.exports.mkSetClientPlanInformation = async function (
   try {
     var findSecret = [];
     var removeActive = [];
+    var model = input.model;
+
+    if (model === 0) {
+      identifier = input.dni;
+    } else {
+      identifier = input.code;
+    }
     await conn.connect();
     findSecret = await conn.write("/ppp/secret/getall", [
-      "=.proplist=.id",
-      "?=name=" + input.code,
-    ]);
-    removeActive = await conn.write("/ppp/active/getall", [
-      "=.proplist=.id",
-      "?=name=" + input.code,
+      "=.proplist=.id,name",
+      "?=name=" + identifier,
     ]);
     if (findSecret.length > 0) {
-      await conn.write("/ppp/secret/set", [
+      const setSecret = await conn.write("/ppp/secret/set", [
         "=.id=" + findSecret[0][".id"],
         "=profile=" + input.newClientPlan,
       ]);
-      if (input.removeActive) {
-        if (removeActive.length > 0) {
-          // eslint-disable-next-line no-redeclare
-          var removeActive = await conn.write("/ppp/active/remove", [
+      if (setSecret.length > 0) {
+        if (input.removeActive) {
+          removeActive = await conn.write("/ppp/active/getall", [
             "=.proplist=.id",
-            "=.id=" + removeActive[0][".id"],
+            "?=name=" + identifier,
           ]);
+          if (removeActive.length > 0) {
+            // eslint-disable-next-line no-redeclare
+            var removeActive = await conn.write("/ppp/active/remove", [
+              "=.proplist=.id",
+              "=.id=" + removeActive[0][".id"],
+            ]);
+          }
         }
       }
       conn.close();
