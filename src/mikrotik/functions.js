@@ -132,7 +132,7 @@ module.exports.mkClientStatus = async function (
     // Helper function to safely query Mikrotik with timeout
     const safeWrite = async (command, params) => {
       // Use logic conn, allowing it seamlessly handle reconnections
-      const timeoutMs = 3000; // 5 segundos de timeout
+      const timeoutMs = 2000; // 2 segundos de timeout
       
       const timeoutPromise = new Promise((_, reject) => {
         setTimeout(() => reject(new Error('Command timeout')), timeoutMs);
@@ -214,8 +214,10 @@ module.exports.mkClientStatus = async function (
       if (getSecret.length > 0) {
         searchIdentifier = dni;
         getActiveConnection = await safeWrite("/ppp/active/print", ["?=name=" + dni]);
-        getInterfaceConnection = await safeWrite("/interface/print", ["?=name=<pppoe-" + dni + ">"]);
-        getInterfacePppoeConnection = await safeWrite("/interface/pppoe-server/print", ["?=name=<pppoe-" + dni + ">"]);
+        if (getActiveConnection.length > 0) {
+          getInterfaceConnection = await safeWrite("/interface/print", ["?=name=<pppoe-" + dni + ">"]);
+          getInterfacePppoeConnection = await safeWrite("/interface/pppoe-server/print", ["?=name=<pppoe-" + dni + ">"]);
+        }
       }
     }
     
