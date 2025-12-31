@@ -131,7 +131,8 @@ module.exports.mkClientStatus = async function (
     
     // Helper function to safely query Mikrotik with timeout
     const safeWrite = async (command, params) => {
-      const timeoutMs = 5000; // 5 segundos de timeout
+      // Use logic conn, allowing it seamlessly handle reconnections
+      const timeoutMs = 10000; // 5 segundos de timeout
       
       const timeoutPromise = new Promise((_, reject) => {
         setTimeout(() => reject(new Error('Command timeout')), timeoutMs);
@@ -170,29 +171,47 @@ module.exports.mkClientStatus = async function (
     if (model === 1) {
       console.log('Trying with code:', code);
       getSecret = await safeWrite("/ppp/secret/print", ["?=name=" + code]);
-      
+      console.log('getSecret:', getSecret);
       // Si encontró con code, continuar con code
       if (getSecret.length > 0) {
         searchIdentifier = code;
         getActiveConnection = await safeWrite("/ppp/active/print", ["?=name=" + code]);
         getInterfaceConnection = await safeWrite("/interface/print", ["?=name=<pppoe-" + code + ">"]);
         getInterfacePppoeConnection = await safeWrite("/interface/pppoe-server/print", ["?=name=<pppoe-" + code + ">"]);
-      } else if (dni) {
+      } else {
         // Fallback: Si no encontró con code, intentar con dni
-        console.log('Code not found, trying with dni:', dni);
-        getSecret = await safeWrite("/ppp/secret/print", ["?=name=" + dni]);
+        // IMPORTANTE: Si la búsqueda anterior falló con UNKNOWNREPLY/timeout, la conexión puede estar corrupta.
+        // Forzamos reconexión para asegurar que la búsqueda por DNI tenga un canal limpio.
+        console.log('Code not found or compromised connection. Reconnecting before DNI fallback...');
         
-        if (getSecret.length > 0) {
-          searchIdentifier = dni;
-          getActiveConnection = await safeWrite("/ppp/active/print", ["?=name=" + dni]);
-          getInterfaceConnection = await safeWrite("/interface/print", ["?=name=<pppoe-" + dni + ">"]);
-          getInterfacePppoeConnection = await safeWrite("/interface/pppoe-server/print", ["?=name=<pppoe-" + dni + ">"]);
+        try {
+          conn.close();
+        } catch (e) {
+          console.log('Error closing previous connection:', e);
+        }
+
+        // Crear nueva conexión limpia
+        conn = await GTEL(mikrotikHost);
+        await conn.connect();
+        console.log('Reconnected successfully.');
+
+        if (dni) {
+          console.log('Trying with dni:', dni);
+          getSecret = await safeWrite("/ppp/secret/print", ["?=name=" + dni]);
+          console.log('getSecret:', getSecret);
+          if (getSecret.length > 0) {
+            searchIdentifier = dni;
+            getActiveConnection = await safeWrite("/ppp/active/print", ["?=name=" + dni]);
+            getInterfaceConnection = await safeWrite("/interface/print", ["?=name=<pppoe-" + dni + ">"]);
+            getInterfacePppoeConnection = await safeWrite("/interface/pppoe-server/print", ["?=name=<pppoe-" + dni + ">"]);
+          }
         }
       }
     } else if (dni) {
       // Si model !== 1, buscar directamente con dni
       console.log('Trying with dni:', dni);
       getSecret = await safeWrite("/ppp/secret/print", ["?=name=" + dni]);
+      console.log('getSecret:', getSecret);
       
       if (getSecret.length > 0) {
         searchIdentifier = dni;
