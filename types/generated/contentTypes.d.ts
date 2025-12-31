@@ -869,6 +869,63 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
+export interface ApiBillingBatchBillingBatch extends Schema.CollectionType {
+  collectionName: 'billing_batches';
+  info: {
+    singularName: 'billing-batch';
+    pluralName: 'billing-batches';
+    displayName: 'Billing Batch';
+    description: 'Tracks background billing generation jobs';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    status: Attribute.Enumeration<
+      ['pending', 'processing', 'completed', 'failed']
+    > &
+      Attribute.DefaultTo<'pending'>;
+    finalized: Attribute.Boolean & Attribute.DefaultTo<false>;
+    progress: Attribute.Integer & Attribute.DefaultTo<0>;
+    total: Attribute.Integer & Attribute.DefaultTo<0>;
+    logs: Attribute.JSON;
+    month: Attribute.Integer;
+    year: Attribute.Integer;
+    limit: Attribute.Date;
+    city: Attribute.Relation<
+      'api::billing-batch.billing-batch',
+      'manyToOne',
+      'api::city.city'
+    >;
+    clienttype: Attribute.Relation<
+      'api::billing-batch.billing-batch',
+      'manyToOne',
+      'api::clienttype.clienttype'
+    >;
+    company: Attribute.Relation<
+      'api::billing-batch.billing-batch',
+      'oneToOne',
+      'api::company.company'
+    >;
+    results: Attribute.JSON;
+    serviceIds: Attribute.JSON;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::billing-batch.billing-batch',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::billing-batch.billing-batch',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiBillingperiodBillingperiod extends Schema.CollectionType {
   collectionName: 'billingperiods';
   info: {
@@ -1178,6 +1235,9 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     meta_template: Attribute.String;
     meta_token: Attribute.String;
     meta_ticket_template: Attribute.String;
+    meta_api_version: Attribute.String;
+    meta_phone_id: Attribute.String;
+    meta_WBA_id: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -3186,6 +3246,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
+      'api::billing-batch.billing-batch': ApiBillingBatchBillingBatch;
       'api::billingperiod.billingperiod': ApiBillingperiodBillingperiod;
       'api::city.city': ApiCityCity;
       'api::clienttype.clienttype': ApiClienttypeClienttype;

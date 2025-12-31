@@ -1,0 +1,71 @@
+{
+    "kind": "collectionType",
+    "collectionName": "billing_batches",
+    "info": {
+        "singularName": "billing-batch",
+        "pluralName": "billing-batches",
+        "displayName": "Billing Batch",
+        "description": "Tracks background billing generation jobs"
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "status": {
+            "type": "enumeration",
+            "enum": [
+                "pending",
+                "processing",
+                "completed",
+                "failed"
+            ],
+            "default": "pending"
+        },
+        "finalized": {
+            "type": "boolean",
+            "default": false
+        },
+        "progress": {
+            "type": "integer",
+            "default": 0
+        },
+        "total": {
+            "type": "integer",
+            "default": 0
+        },
+        "logs": {
+            "type": "json"
+        },
+        "month": {
+            "type": "integer"
+        },
+        "year": {
+            "type": "integer"
+        },
+        "limit": {
+            "type": "date"
+        },
+        "city": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::city.city"
+        },
+        "clienttype": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::clienttype.clienttype"
+        },
+        "company": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::company.company"
+        },
+        "results": {
+            "type": "json"
+        },
+        "serviceIds": {
+            "type": "json"
+        }
+    }
+}

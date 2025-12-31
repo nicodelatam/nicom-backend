@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 module.exports = {
   async subscribe(ctx) {
     const TOKEN = process.env.TOKEN
-
+    console.log(TOKEN)
     const data = ctx.query
     const mode = data['hub.mode']
     const token = data['hub.verify_token']
@@ -21,7 +21,7 @@ module.exports = {
       }
     }
   },
-  async notification (ctx) {
+  async notification(ctx) {
     const TOKEN = process.env.TOKEN
 
     const data = ctx.request.body
@@ -46,7 +46,7 @@ module.exports = {
             }
           })
         }
-        
+
         const contact = await strapi.service('api::whatsappcontact.whatsappcontact').find({
           filters: {
             phone: data.entry[0].changes[0].value.messages[0].from
@@ -74,7 +74,7 @@ module.exports = {
         })
         const phone_number_id = data.entry[0].changes[0].value.metadata.phone_number_id
         const from = data.entry[0].changes[0].value.messages[0].from
-        fetch(`https://graph.facebook.com/v15.0/${phone_number_id}/messages?access_token=${TOKEN}`, {
+        fetch(`https://graph.facebook.com/v24.0/${phone_number_id}/messages?access_token=${TOKEN}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
